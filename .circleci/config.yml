@@ -19,6 +19,8 @@ jobs:
       - run: make db-migrate-test
       - run: make test
       - run: make
+      - run: make docker-build
+      - run: make docker-tag
 
 workflows:
   version: 2
