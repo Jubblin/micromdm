@@ -11,6 +11,7 @@ jobs:
 
     working_directory: /go/src/github.com/micromdm/micromdm
     steps: &steps
+      - run: printenv
       - checkout
       - run: apt-get update -y && apt-get install postgresql-client -y
       - run: make deps
@@ -19,8 +20,15 @@ jobs:
       - run: make db-migrate-test
       - run: make test
       - run: make
-      - run: make docker-build
-      - run: make docker-tag
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      # build and push Docker image
+      - run: |
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t micromdm:$TAG .
+          #echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          #docker push CircleCI-Public/circleci-demo-docker:$TAG
 
 workflows:
   version: 2
