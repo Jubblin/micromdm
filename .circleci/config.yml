@@ -13,7 +13,7 @@ jobs:
     steps: &steps
       - run: printenv
       - checkout
-      - run: apt-get update -y && apt-get install postgresql-client -y
+      - run: apt-get update -y && apt-get install postgresql-client docker-cli -y - run:
       - run: make deps
       - run: GO111MODULE=on go install github.com/pressly/goose/cmd/goose
       - run: make db-reset-test
